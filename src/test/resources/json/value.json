@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "beat": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        }
+      }
+    },
+    "source": {
+      "type": "string"
+    },
+    "offset": {
+      "type": "number"
+    },
+    "message": {
+      "type": "string"
+    },
+    "prospector": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "btype": {
+      "type": "string"
+    },
+    "beat": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

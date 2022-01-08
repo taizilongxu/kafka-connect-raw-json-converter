@@ -1,0 +1,21 @@
+{
+  "timestamp": "2022-01-06T10:11:59.404Z",
+  "metadata": {
+    "beat": "filebeat",
+    "type": "doc",
+    "version": "6.2.3",
+    "topic": "test"
+  },
+  "source": "/test/path",
+  "offset": 107301809,
+  "message": "test",
+  "prospector": {
+    "type": "log"
+  },
+  "btype": "test",
+  "beat": {
+    "name": "test.com",
+    "hostname": "test",
+    "version": "6.2.3"
+  }
+}

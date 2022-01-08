@@ -1,0 +1,115 @@
+{
+  "schema": {
+    "type": "struct",
+    "fields": [
+      {
+        "type": "struct",
+        "fields": [
+          {
+            "type": "string",
+            "optional": false,
+            "field": "beat"
+          },
+          {
+            "type": "string",
+            "optional": false,
+            "field": "topic"
+          },
+          {
+            "type": "string",
+            "optional": false,
+            "field": "type"
+          },
+          {
+            "type": "string",
+            "optional": false,
+            "field": "version"
+          }
+        ],
+        "optional": false,
+        "field": "metadata"
+      },
+      {
+        "type": "double",
+        "optional": false,
+        "field": "offset"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "btype"
+      },
+      {
+        "type": "struct",
+        "fields": [
+          {
+            "type": "string",
+            "optional": false,
+            "field": "hostname"
+          },
+          {
+            "type": "string",
+            "optional": false,
+            "field": "name"
+          },
+          {
+            "type": "string",
+            "optional": false,
+            "field": "version"
+          }
+        ],
+        "optional": false,
+        "field": "beat"
+      },
+      {
+        "type": "struct",
+        "fields": [
+          {
+            "type": "string",
+            "optional": false,
+            "field": "type"
+          }
+        ],
+        "optional": false,
+        "field": "prospector"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "source"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "message"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "timestamp"
+      }
+    ],
+    "optional": false
+  },
+  "payload": {
+    "timestamp": "2022-01-06T10:11:59.404Z",
+    "metadata": {
+      "beat": "filebeat",
+      "type": "doc",
+      "version": "6.2.3",
+      "topic": "test"
+    },
+    "source": "/test/path",
+    "offset": 107301809,
+    "message": "test",
+    "prospector": {
+      "type": "log"
+    },
+    "btype": "test",
+    "beat": {
+      "name": "test.com",
+      "hostname": "test",
+      "version": "6.2.3"
+    }
+  }
+}
