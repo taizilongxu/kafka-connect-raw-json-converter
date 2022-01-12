@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.VisibleForTesting;
 import io.confluent.connect.json.JsonSchemaData;
 import io.confluent.connect.json.JsonSchemaDataConfig;
@@ -34,13 +35,17 @@ import org.apache.kafka.common.errors.InvalidConfigurationException;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
+import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.errors.SchemaBuilderException;
 import org.apache.kafka.connect.storage.Converter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
+
+import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +68,8 @@ public class JsonToSchemaConverter extends AbstractKafkaSchemaSerDe implements C
   private static final JsonNodeFactory JSON_NODE_FACTORY = JsonNodeFactory.withExactBigDecimals(true);
   private final ObjectMapper objectMapper = new ObjectMapper();
   private int registrySchemaId;
+  private String hoistField;
+  private String hoistFieldTimestamp;
 
   public JsonToSchemaConverter() {
 
@@ -97,7 +104,17 @@ public class JsonToSchemaConverter extends AbstractKafkaSchemaSerDe implements C
             DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS
     ).forEach(objectMapper::enable);
     objectMapper.setNodeFactory(JSON_NODE_FACTORY);
+    // config
     registrySchemaId = jsonToSchemaConverterConfig.getSchemaId();
+    hoistField = jsonToSchemaConverterConfig.getHoistField();
+    hoistFieldTimestamp = jsonToSchemaConverterConfig.getHoistFieldTimestamp();
+  }
+
+  @TestOnly
+  public void configHoist(Map<String, String> configs) {
+    JsonToSchemaConverterConfig jsonToSchemaConverterConfig = new JsonToSchemaConverterConfig(configs);
+    hoistField = jsonToSchemaConverterConfig.getHoistField();
+    hoistFieldTimestamp = jsonToSchemaConverterConfig.getHoistFieldTimestamp();
   }
 
   @Override
@@ -128,6 +145,25 @@ public class JsonToSchemaConverter extends AbstractKafkaSchemaSerDe implements C
     // This handles a tombstone message
     if (value == null) {
       return SchemaAndValue.NULL;
+    }
+
+    if (hoistField != null) {
+      SchemaBuilder schemaBuilder = SchemaBuilder.struct()
+              .field(hoistField, Schema.STRING_SCHEMA);
+      ObjectNode rootNode = objectMapper.createObjectNode();
+      rootNode.put(hoistField, new String(value, StandardCharsets.UTF_8));
+      // add hoist timestamp
+      if (hoistFieldTimestamp != null) {
+        schemaBuilder.field(hoistFieldTimestamp, Schema.STRING_SCHEMA);
+        try {
+          rootNode.put(hoistFieldTimestamp, objectMapper.readTree(value).get(hoistFieldTimestamp));
+        } catch (IOException e) {
+          log.error("Extract hoist field timestamp error: ", e);
+        }
+      }
+      Schema schema = schemaBuilder.build();
+
+      return new SchemaAndValue(schema, jsonSchemaData.toConnectData(schema, rootNode));
     }
 
     try {

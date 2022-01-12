@@ -1,0 +1,22 @@
+{
+  "schema": {
+    "type": "struct",
+    "fields": [
+      {
+        "type": "string",
+        "optional": false,
+        "field": "json"
+      },
+      {
+        "type": "string",
+        "optional": false,
+        "field": "timestamp"
+      }
+    ],
+    "optional": false
+  },
+  "payload": {
+    "json": "{\n  \"timestamp\": \"2022-01-06T10:11:59.404Z\",\n  \"metadata\": {\n    \"beat\": \"filebeat\",\n    \"type\": \"doc\",\n    \"version\": \"6.2.3\",\n    \"topic\": \"test\"\n  },\n  \"source\": \"/test/path\",\n  \"offset\": 107301809,\n  \"message\": \"test\",\n  \"prospector\": {\n    \"type\": \"log\"\n  },\n  \"btype\": \"test\",\n  \"beat\": {\n    \"name\": \"test.com\",\n    \"hostname\": \"test\",\n    \"version\": \"6.2.3\"\n  }\n}",
+    "timestamp": "2022-01-06T10:11:59.404Z"
+  }
+}
