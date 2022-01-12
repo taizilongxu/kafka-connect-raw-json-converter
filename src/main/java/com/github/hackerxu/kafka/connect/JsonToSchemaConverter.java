@@ -55,6 +55,7 @@ public class JsonToSchemaConverter extends AbstractKafkaSchemaSerDe implements C
 
   private SchemaRegistryClient schemaRegistry;
   private Serializer serializer;
+  private Integer VERSION=1;
 
   private boolean isKey;
   private JsonSchemaData jsonSchemaData;
@@ -132,6 +133,7 @@ public class JsonToSchemaConverter extends AbstractKafkaSchemaSerDe implements C
     try {
       JsonNode jsonValue = objectMapper.readTree(value);
       JsonSchema jsonSchema = ((JsonSchema) schemaRegistry.getSchemaBySubjectAndId(topic, registrySchemaId));
+      jsonSchema = jsonSchema.copy(VERSION);
       Schema schema = jsonSchemaData.toConnectSchema(jsonSchema);
       log.debug("Schema: " + jsonSchema.toString());
       log.debug("Schema fields: " + schema.fields());

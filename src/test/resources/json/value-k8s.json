@@ -1,0 +1,81 @@
+{
+  "type": "object",
+  "properties": {
+    "@timestamp": {
+      "type": "string"
+    },
+    "kubernetes": {
+      "type": "object",
+      "properties": {
+        "pod": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "namespace": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "container": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "name": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "host": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "log": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "message": {
+      "type": "string"
+    },
+    "info": {
+      "type": ["object", "null"],
+      "properties": {
+        "app": {
+          "type": "string"
+        },
+        "biz": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
